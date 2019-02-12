@@ -1,0 +1,85 @@
+<page-header>
+
+  </page-header>
+  
+  
+  <div class="ant-spin-container">
+      <div nz-row nzGutter="16">
+          <div nz-col nzSpan="8">
+              
+              <nz-card  nzTitle="模块列表" [nzExtra]="extraTemplate"  >
+                     <nz-tree  #treeCom   (nzContextMenu)="contextMenu($event,template)"
+                          [nzData]="nodes"
+                          (nzClick)="TreeClick($event,false)">
+                          <ng-template #template>
+                                  <ul nz-menu nzInDropDown >
+                                    <li nz-menu-item (click)="downUpdate()">修改</li>
+                                    <li nz-menu-item (click)="downdelete()">删除</li>
+                                    <li nz-menu-item (click)="downAdd()">添加子项</li>
+                                  </ul>
+                          </ng-template>
+  
+                      </nz-tree>
+                </nz-card>
+                <ng-template #extraTemplate>
+                   <button nz-button nzType="default" nzSize="small" (click)="AddModuleInfo()" >增加</button>
+                </ng-template>
+          </div>
+          <div nz-col nzSpan="16">
+               
+                          <ng-container *ngIf="isEdit; else elseTemplate">
+                                <nz-card  *ngIf="moduleInfo !== null" >
+                                    <nz-tabset [nzSelectedIndex]="SelectIndex" (nzSelectChange)="SelectChange($event)">
+                                        <nz-tab nzTitle="模块配置">
+                                            <sf #sf [schema]="schema" [formData]="moduleInfo" [button]="null"  >
+                                                    <button type="submit" nz-button  nzType="primary" (click)="clickNext()">下一步</button>
+                                            </sf>
+                                        </nz-tab>
+                                        <nz-tab nzTitle="模块请求配置">
+                                                <sf #sfAuth [schema]="schemaAuth" [formData]="moduleInfo" [button]="null" (formSubmit)="submit(event)" >
+                                                        <button type="button" nz-button (click)="clickPrevious()">上一步</button>
+                                                        <button type="submit" nz-button  nzType="primary">提交</button>
+                                                </sf>
+                                        </nz-tab>
+                                     </nz-tabset>
+                            </nz-card>
+                           </ng-container>
+                            <ng-template #elseTemplate>
+                                 <nz-card  nzTitle="查看" *ngIf="moduleInfo !== null">
+                                    <sv-container labelWidth="100" col="2">
+                    
+                                            <sv label="中文名称">{{moduleInfo?.fullName}}</sv>
+                                            <sv label="英文名称">{{moduleInfo?.fullNameEn}}</sv>
+                                            <sv label="图标">{{moduleInfo?.icon}}</sv>
+                                            <sv label="排序">{{moduleInfo?.sortCode}}</sv>
+
+                    
+                                            <sv label="前台路由">{{moduleInfo?.urlAddress}}</sv>
+                                            <sv label="后台接口">{{moduleInfo?.apiUrl}}</sv>
+
+                                            <sv label="是不是菜单">{{moduleInfo?.isMenu}}</sv>
+                                            <sv label="是否展开">{{moduleInfo?.isExpand}}</sv>
+
+                                            <sv label="说明">{{moduleInfo?.description}}</sv>
+                                            <sv label="是否可用">{{moduleInfo?.enabledMark}}</sv>
+                                            <sv label="创建人">{{moduleInfo?.creatorUserName}}</sv>
+                                            <sv label="创建时间">{{moduleInfo?.creatorTime}}</sv>
+
+                                     </sv-container>
+
+                                  
+
+                                 </nz-card>
+                                 <nz-card  nzTitle="请求" *ngIf="moduleInfo !== null">
+                                        <st [data]="datas"  [columns]="columns"></st>
+                                </nz-card>
+                            </ng-template>
+                              
+  
+                
+                 
+          </div>
+        </div>
+      
+  </div>
+  

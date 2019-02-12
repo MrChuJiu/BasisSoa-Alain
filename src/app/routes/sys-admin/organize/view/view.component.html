@@ -1,0 +1,74 @@
+<page-header>
+
+</page-header>
+
+
+<div class="ant-spin-container">
+    <div nz-row nzGutter="16">
+        <div nz-col nzSpan="8">
+            
+            <nz-card  nzTitle="组织列表" [nzExtra]="extraTemplate"  >
+                   <nz-tree  #treeCom   (nzContextMenu)="contextMenu($event,template)"
+                        [nzData]="nodes"
+                        (nzClick)="TreeClick($event,false)">
+                        <ng-template #template>
+                                <ul nz-menu nzInDropDown >
+                                  <li nz-menu-item (click)="downUpdate()">修改</li>
+                                  <li nz-menu-item (click)="downdelete()">删除</li>
+                                  <li nz-menu-item (click)="downAdd()">添加子项</li>
+                                </ul>
+                        </ng-template>
+
+                    </nz-tree>
+              </nz-card>
+              <ng-template #extraTemplate>
+                 <button nz-button nzType="default" nzSize="small" (click)="AddOrganizeInfo()"  >增加</button>
+              </ng-template>
+        </div>
+        <div nz-col nzSpan="16">
+                <nz-card  nzTitle="查看" *ngIf="organizeInfo !== null">
+                        <ng-container *ngIf="isEdit; else elseTemplate">
+                               
+                             <sf #sf [schema]="schema" [formData]="organizeInfo" [button]="null"></sf>
+                             <sf #sfg [schema]="schemag" [formData]="organizeInfo" (formSubmit)="submit(event)" ></sf>
+
+                         </ng-container>
+                            <ng-template #elseTemplate>
+                              <sv-container labelWidth="100" col="2">
+              
+                                  <sv label="中文名称">{{organizeInfo?.fullName}}</sv>
+                                  <sv label="英文名称">{{organizeInfo?.fullNameEn}}</sv>
+                                  <sv label="类别">{{organizeInfo?.category}}</sv>
+                                  <sv label="说明">{{organizeInfo?.description}}</sv>
+                                  <sv label="排序">{{organizeInfo?.sortCode}}</sv>
+                                  <sv label="是否可用">{{organizeInfo?.enabledMark}}</sv>
+                                  <sv label="创建人">{{organizeInfo?.creatorUserName}}</sv>
+                                  <sv label="创建时间">{{organizeInfo?.creatorTime}}</sv>
+                                  
+              
+                                  <ng-container *ngIf="organizeInfo?.category == 'GROUP' ||  organizeInfo?.category == 'COMPANY'">
+                                          <sv label="简称">{{organizeInfo?.shortName}}</sv>
+                                          <sv label="公司Logo">{{organizeInfo?.logo}}</sv>
+                                          <sv label="负责人微信">{{organizeInfo?.weChat}}</sv>
+                                          <sv label="工商登记号">{{organizeInfo?.regNo}}</sv>
+                                          <sv label="公司位置">{{organizeInfo?.layers}}</sv>
+                                          <sv label="支票抬头">{{organizeInfo?.chkHead}}</sv>
+                                          <sv label="发票抬头">{{organizeInfo?.invHead}}</sv>
+                                          <sv label="公司地址">{{organizeInfo?.address}}</sv>
+                                          <sv label="公司官网">{{organizeInfo?.website}}</sv>
+                                          <sv label="公司邮箱">{{organizeInfo?.email}}</sv>
+                                          <sv label="机构代码">{{organizeInfo?.orgCode}}</sv>
+                                          <sv label="银行账号">{{organizeInfo?.bankNo}}</sv>
+                                          <sv label="公司电话">{{organizeInfo?.mobilePhone}}</sv>
+                                  </ng-container>
+                                 
+                                </sv-container>
+                            </ng-template>
+                            
+
+                </nz-card>
+               
+        </div>
+      </div>
+    
+</div>

@@ -1,0 +1,11 @@
+
+<page-header>
+    <ng-template #extraTemplate>
+        <button nz-button nzType="primary" (click)="openComponent('0')" >新建</button>
+      </ng-template>
+    
+</page-header>
+
+<nz-card  [nzExtra]="extraTemplate">
+    <st #st [data]="url" [req]="req" [columns]="columns"></st>
+  </nz-card>

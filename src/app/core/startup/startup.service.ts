@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { zip } from 'rxjs';
 import { catchError } from 'rxjs/operators';
-import { MenuService, SettingsService, TitleService, ALAIN_I18N_TOKEN } from '@delon/theme';
+import { MenuService, SettingsService, TitleService, ALAIN_I18N_TOKEN, _HttpClient } from '@delon/theme';
 import { DA_SERVICE_TOKEN, ITokenService } from '@delon/auth';
 import { ACLService } from '@delon/acl';
 import { TranslateService } from '@ngx-translate/core';
@@ -29,6 +29,7 @@ export class StartupService {
     private titleService: TitleService,
     @Inject(DA_SERVICE_TOKEN) private tokenService: ITokenService,
     private httpClient: HttpClient,
+    private http:_HttpClient,
     private injector: Injector
   ) {
     iconSrv.addIcon(...ICONS_AUTO, ...ICONS);
@@ -89,7 +90,9 @@ export class StartupService {
        return;
      }
      
-     this.httpClient.get('/AppInit').subscribe((res:any) => {
+     this.http.get('/AppInit').subscribe((res:any) => {
+    
+
       console.log(res);
 
       const app: any = {
@@ -109,8 +112,11 @@ export class StartupService {
       // ACL：设置权限为全量
       this.aclService.setFull(true);
 
-      // 初始化菜单
-      this.menuService.add(res.data.moduleDtos);
+   
+     
+
+      // // 初始化菜单
+       this.menuService.add(res.data.moduleDtos);
       // 设置页面标题的后缀
        this.titleService.suffix = app.name;
      })
