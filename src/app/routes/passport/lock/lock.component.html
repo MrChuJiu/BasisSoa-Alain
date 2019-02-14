@@ -11,7 +11,7 @@
       <nz-form-item>
         <nz-form-control>
           <nz-input-group nzSuffixIcon="anticon anticon-lock">
-            <input type="password" nz-input formControlName="password" />
+            <input type="password" nz-input formControlName="password"  placeholder="password: 123456" />
           </nz-input-group>
           <nz-form-explain *ngIf="f.get('password').dirty && f.get('password').errors">
             {{ 'validation.password.required' | translate }}

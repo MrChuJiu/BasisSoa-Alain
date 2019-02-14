@@ -25,7 +25,8 @@ const routes: Routes = [
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
       { path: 'dashboard', component: DashboardComponent, data: { title: '仪表盘' } },
       { path: 'exception', loadChildren: './exception/exception.module#ExceptionModule' },
-      { path: 'SysAdmin', loadChildren: './sys-admin/sys-admin.module#SysAdminModule' }
+      { path: 'SysAdmin', loadChildren: './sys-admin/sys-admin.module#SysAdminModule' },
+      { path: 'SysPro', loadChildren: './sys-pro/sys-pro.module#SysProModule' }
       // 业务子模块
       // { path: 'widgets', loadChildren: './widgets/widgets.module#WidgetsModule' }
     ]

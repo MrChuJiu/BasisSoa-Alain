@@ -1,0 +1,11 @@
+
+
+      <nz-list nzItemLayout="horizontal">
+            <nz-list-item [nzActions]="[passwordOp]">
+              <ng-template #passwordOp>
+                <nz-switch [(ngModel)]="multiUserLogin" nzCheckedChildren="开启" nzUnCheckedChildren="关闭" (ngModelChange)="switchChange($event)"></nz-switch>
+              </ng-template>
+              <nz-list-item-meta nzTitle="是否允许多用户登录" nzDescription="该账号可以多人同时在线"></nz-list-item-meta>
+            </nz-list-item>
+          </nz-list>
+    

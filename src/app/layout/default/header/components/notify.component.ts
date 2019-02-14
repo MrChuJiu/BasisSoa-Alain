@@ -32,14 +32,6 @@ export class HeaderNotifyComponent {
       clearText: '清空通知',
     },
     {
-      title: '消息',
-      list: [],
-      emptyText: '您已读完所有消息',
-      emptyImage:
-        'https://gw.alipayobjects.com/zos/rmsportal/sAuJeJzSKbUmHfBQRzmZ.svg',
-      clearText: '清空消息',
-    },
-    {
       title: '待办',
       list: [],
       emptyText: '你已完成所有待办',
@@ -121,33 +113,6 @@ export class HeaderNotifyComponent {
           title: '内容不要超过两行字，超出时自动截断',
           datetime: '2017-08-07',
           type: '通知',
-        },
-        {
-          id: '000000006',
-          avatar:
-            'https://gw.alipayobjects.com/zos/rmsportal/fcHMVNCjPOsbUGdEduuv.jpeg',
-          title: '曲丽丽 评论了你',
-          description: '描述信息描述信息描述信息',
-          datetime: '2017-08-07',
-          type: '消息',
-        },
-        {
-          id: '000000007',
-          avatar:
-            'https://gw.alipayobjects.com/zos/rmsportal/fcHMVNCjPOsbUGdEduuv.jpeg',
-          title: '朱偏右 回复了你',
-          description: '这种模板用于提醒谁与你发生了互动，左侧放『谁』的头像',
-          datetime: '2017-08-07',
-          type: '消息',
-        },
-        {
-          id: '000000008',
-          avatar:
-            'https://gw.alipayobjects.com/zos/rmsportal/fcHMVNCjPOsbUGdEduuv.jpeg',
-          title: '标题',
-          description: '这种模板用于提醒谁与你发生了互动，左侧放『谁』的头像',
-          datetime: '2017-08-07',
-          type: '消息',
         },
         {
           id: '000000009',

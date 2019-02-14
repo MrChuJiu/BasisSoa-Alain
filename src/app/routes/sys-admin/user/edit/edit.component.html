@@ -1,3 +1,5 @@
 <sf #sf [schema]="schema" [ui]="ui" [formData]="userInfo"  [button]="sfbutton" (formSubmit)="submit(event)">
-
+    <ng-template sf-template="headIcon" let-me let-ui="ui" let-schema="schema">
+        <div class="avatar"><img [src]="userInfo.headIcon" alt="Avatar"></div>
+    </ng-template>
 </sf>

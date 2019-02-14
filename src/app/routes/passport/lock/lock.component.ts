@@ -14,11 +14,11 @@ export class UserLockComponent {
 
   constructor(
     fb: FormBuilder,
-    @Inject(DA_SERVICE_TOKEN) private tokenService: ITokenService,
+    //@Inject(DA_SERVICE_TOKEN) private tokenService: ITokenService,
     public settings: SettingsService,
     private router: Router,
   ) {
-    tokenService.clear();
+    //tokenService.clear();
     this.f = fb.group({
       password: [null, Validators.required],
     });
@@ -33,10 +33,15 @@ export class UserLockComponent {
     if (this.f.valid) {
       console.log('Valid!');
       console.log(this.f.value);
-      this.tokenService.set({
-        token: '123'
-      });
-      this.router.navigate(['dashboard']);
+      // this.tokenService.set({
+      //   token: '123'
+      // });
+
+      if(this.f.value.password === "123456") {
+        this.router.navigate(['dashboard']);
+      }
+
+   
     }
   }
 }

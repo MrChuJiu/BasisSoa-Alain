@@ -1,0 +1,61 @@
+<div nz-row nzGutter="24" class="py-lg">
+    <div nz-col nzMd="24" nzLg="7">
+      <nz-card [nzBordered]="false" class="mb-lg" [nzLoading]="!user">
+        <ng-container *ngIf="user">
+          <div class="avatarHolder">
+            <img src="{{user.headIcon}}">
+            <div class="name">{{user.realName}}</div>
+            <div>{{user.description}}</div>
+          </div>
+          <div class="detail">
+              <p><i class="title"></i>{{user.roleName}}</p>
+              <p><i class="group"></i>{{user.organizeName}}</p>
+          </div>
+
+
+          <nz-divider nzDashed></nz-divider>
+          <div class="team">
+            <div class="teamTitle">系统</div>
+              <div nz-row nzGutter="36">
+
+                
+                  <div nz-col  nzLg="24" nzXl="8">
+                      <a class="text-truncate">
+                        登录系统：{{user.logOnCount}}次
+                      </a>
+                  </div>
+
+                <div nz-col  nzLg="24" nzXl="8">
+                  <a  class="text-truncate">
+                      <nz-tag [nzColor]="'cyan'"> {{user.language}}</nz-tag>
+                   
+                  </a>
+                </div>
+
+                <div nz-col  nzLg="24" nzXl="8">
+                    <a class="text-truncate">
+                        <nz-tag [nzColor]="'blue'"> {{user.theme}}</nz-tag>
+                    </a>
+                </div>
+
+              </div>
+          </div>
+
+        
+        </ng-container>
+
+
+
+      </nz-card>
+    </div>
+    <div nz-col nzMd="24" nzLg="17">
+      <nz-card class="tabsCard" [nzBordered]="false" [nzTitle]="tagTitleTpl">
+        <ng-template #tagTitleTpl>
+          <nz-tabset nzSize="large" [nzSelectedIndex]="pos">
+            <nz-tab *ngFor="let i of tabs" [nzTitle]="i.tab" (nzClick)="to(i)"></nz-tab>
+          </nz-tabset>
+        </ng-template>
+        <router-outlet></router-outlet>
+      </nz-card>
+    </div>
+  </div>

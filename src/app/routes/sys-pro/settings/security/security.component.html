@@ -1,0 +1,49 @@
+<nz-list nzItemLayout="horizontal">
+    <nz-list-item [nzActions]="[passwordOp]">
+      <ng-template #passwordOp>
+        <a (click)="showModal(1)">修改</a>
+      </ng-template>
+      <nz-list-item-meta nzTitle="账户密码" [nzDescription]="passwordDesc">
+        <ng-template #passwordDesc>
+          当前密码强度：<span class="text-green">{{userInfo?.passwordSecurity}}</span>
+        </ng-template>
+      </nz-list-item-meta>
+    </nz-list-item>
+    <nz-list-item [nzActions]="[phoneOp]">
+      <ng-template #phoneOp>
+        <a (click)="showModal(2)">修改</a>
+      </ng-template>
+      <nz-list-item-meta nzTitle="密保手机" [nzDescription]="phoneDesc">
+        <ng-template #phoneDesc>
+          已绑定手机： <span> {{userInfo?.tel}} </span>
+        </ng-template>
+      </nz-list-item-meta>
+    </nz-list-item>
+    <nz-list-item [nzActions]="[emailOp]">
+        <ng-template #emailOp>
+          <a (click)="showModal(3)">修改</a>
+        </ng-template>
+        <nz-list-item-meta nzTitle="邮箱" [nzDescription]="emailDesc">
+          <ng-template #emailDesc>
+            已绑定邮箱： <span> {{userInfo?.email}} </span>
+          </ng-template>
+        </nz-list-item-meta>
+      </nz-list-item>
+  </nz-list>
+
+
+
+  <nz-modal [(nzVisible)]="isPassVisible" nzTitle="修改密码" (nzOnCancel)="handleCancel(1)" (nzOnOk)="handleOk(1)">
+      <input nz-input placeholder="新密码" [(ngModel)]="PassValue">
+  </nz-modal>
+
+  <nz-modal [(nzVisible)]="isPhoneVisible" nzTitle="修改手机号" (nzOnCancel)="handleCancel(2)" (nzOnOk)="handleOk(2)">
+      <input nz-input placeholder="新手机号" [(ngModel)]="PhoneValue">
+  </nz-modal>
+
+  <nz-modal [(nzVisible)]="isEmailVisible" nzTitle="修改邮箱" (nzOnCancel)="handleCancel(3)" (nzOnOk)="handleOk(3)">
+      <input nz-input placeholder="新邮箱" [(ngModel)]="EmailValue">
+  </nz-modal>
+
+
+

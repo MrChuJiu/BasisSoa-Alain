@@ -6,10 +6,25 @@ import { SFSchema, SFUISchema, SFButton, SFComponent } from '@delon/form';
 @Component({
   selector: 'app-sys-admin-user-edit',
   templateUrl: './edit.component.html',
+  styles  : [ `
+  .avatar {
+    width: 144px;
+    height: 144px;
+    margin-bottom: 12px;
+    overflow: hidden;
+  }
+  img {
+    width: 100%;
+    height: 100%;
+    border-radius: 100px;
+  }
+  ` ]
+
 })
 export class SysAdminUserEditComponent implements OnInit {
   @Input() Id = '';
   userInfo:any = {};
+
 
 
   @ViewChild('sf') sf: SFComponent;
@@ -31,10 +46,35 @@ export class SysAdminUserEditComponent implements OnInit {
         maxLength:64
       },
       headIcon: {
-        type: "string",
-        title: "头像",
-        maxLength:255
+        type: 'string',
+        title: '',
+        ui: {
+            widget: 'custom'
+        },
+        default: 'https://b-ssl.duitang.com/uploads/item/201603/15/20160315000033_rhe4u.jpeg'
       },
+      custom: {
+        type: 'string',
+        title: '头像',
+        enum: [
+          {
+            status: 'done',
+          },
+        ],
+        ui: {
+          widget: 'upload',
+          action: '/File?FileType=0',
+          limit:1,
+          showUploadList:false,
+          change: (args) => {
+              if(args.type == "success") {
+                  this.userInfo.headIcon = 'https://localhost:5001/' + args.file.response.data;
+                  this.sf.setValue('/headIcon','https://localhost:5001/' + args.file.response.data);
+              }
+          },
+        },
+      },
+     
       birthday: {
         type: 'string',
         title: "出生日期",
@@ -145,9 +185,9 @@ export class SysAdminUserEditComponent implements OnInit {
     if(this.Id != '0') {
        this.http.get(`/SysUser/GetUserDetails`,{Id:this.Id}).subscribe( (res:any) => {
          if(res.code == 200) {
-           debugger;
+
            this.userInfo = res.data;
-           this.getRole(this.userInfo.roleId);
+           this.getRole(this.userInfo.organizeId);
            this.sfFromDataInit();
          }
        });
@@ -156,7 +196,7 @@ export class SysAdminUserEditComponent implements OnInit {
   }
 
   submit() {
-   
+   console.log(this.sf.value);
     let Params: any = {};
 
     Object.assign(Params, this.sf.value);
@@ -179,9 +219,6 @@ export class SysAdminUserEditComponent implements OnInit {
           console.log(res.data);
           this.schema.properties.organizeId.enum = res.data;
           this.userInfo = this.sf.value;
-
-     
-        
           this.sfFromDataInit();
         } else {
           this.msgSrv.info(res.message);
@@ -208,7 +245,9 @@ export class SysAdminUserEditComponent implements OnInit {
       this.schema.properties.account.default = this.userInfo.account;
       this.schema.properties.realName.default = this.userInfo.realName;
       this.schema.properties.userPassword.default = this.userInfo.userPassword;
+
       this.schema.properties.headIcon.default = this.userInfo.headIcon;
+
       this.schema.properties.birthday.default = this.userInfo.birthday;
       this.schema.properties.tel.default = this.userInfo.tel;
       this.schema.properties.email.default = this.userInfo.email;
@@ -219,6 +258,8 @@ export class SysAdminUserEditComponent implements OnInit {
       this.schema.properties.enabledMark.default = this.userInfo.enabledMark;
       this.schema.properties.multiUserLogin.default = this.userInfo.multiUserLogin;
       this.schema.properties.description.default = this.userInfo.description;
+
+   
       this.sf.refreshSchema();
     }
 

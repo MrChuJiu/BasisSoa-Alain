@@ -5,7 +5,7 @@
       <nz-form-item>
         <nz-form-control>
           <nz-input-group nzSize="large" nzPrefixIcon="anticon anticon-user">
-            <input nz-input formControlName="userName" placeholder="username: admin or user">
+            <input nz-input formControlName="userName" placeholder="username: admin">
           </nz-input-group>
           <nz-form-explain *ngIf="userName.dirty && userName.errors">
             {{ 'Please enter mobile number!' | translate }}
@@ -15,7 +15,7 @@
       <nz-form-item>
         <nz-form-control>
           <nz-input-group nzSize="large" nzPrefixIcon="anticon anticon-lock">
-            <input nz-input type="password" formControlName="password" placeholder="password: ng-alain.com">
+            <input nz-input type="password" formControlName="password" placeholder="password: 123456">
           </nz-input-group>
           <nz-form-explain *ngIf="password.dirty && password.errors">
             {{ 'Please enter password!' | translate }}

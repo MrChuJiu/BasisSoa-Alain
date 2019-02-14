@@ -1,0 +1,19 @@
+
+<nz-spin [nzSpinning]="userLoading">
+    <div nz-row >
+        <div nz-col nzSpan="8">
+            <sf #sf [schema]="schema" [ui]="ui"  [button]="sfbutton" (formSubmit)="submit(event)">
+            </sf>
+        </div>
+        <div nz-col nzOffset="1" nzSpan="15">
+            <div class="avatar"><img src="{{userInfo?.headIcon}}" alt="Avatar"></div>
+            <nz-upload nzAction="/File?FileType=0" [nzShowUploadList]="false" (nzChange)="UploadChange($event)">
+              <button nz-button class="button_view">
+                <i nz-icon type="upload"></i>
+                <span>更换头像</span>
+              </button>
+            </nz-upload>
+        </div>
+      </div>
+  </nz-spin>
+
