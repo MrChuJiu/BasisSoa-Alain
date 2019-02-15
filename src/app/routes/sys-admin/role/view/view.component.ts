@@ -24,7 +24,13 @@ export class SysAdminRoleViewComponent implements OnInit {
     private downEvent: NzFormatEmitEvent;
     //是否编辑
     private isEdit: boolean = false;
+    //控制Tabs的
+    private SelectIndex:number = 0;
 
+    //当前选中角色的
+    Treenodes:any[] = [];
+    //编辑后提交给后台的
+    CheckTreeArr = [];
 
     //SF配置
     //表单数据操作
@@ -112,6 +118,7 @@ export class SysAdminRoleViewComponent implements OnInit {
         private nzDropdownService: NzDropdownService
     ) {
         this.TreeInitOrganize();
+
     }
 
     ngOnInit(): void {
@@ -131,6 +138,13 @@ export class SysAdminRoleViewComponent implements OnInit {
         });
     }
 
+    //获取登录人可以分配那些权限
+    TreeModule(roleId:string) {
+        this.http.get('/SysModule/GetModuleTreeAuthList',{Id:roleId}).subscribe((res: any) => {
+            this.Treenodes = res.data;
+       });
+    }
+
     //点击组织事件
     TreeOrganizeClick(event): void {
         this.OrganizeId =  event.node.key;
@@ -140,13 +154,6 @@ export class SysAdminRoleViewComponent implements OnInit {
         this.http.get('/SysRole/GetRoleTreeList', Patams).subscribe((res: any) => {
              this.nodes = res.data;
         });
-
-        //this.http.get('/SysRole/GetRoleTree', Patams).subscribe((res: any) => {
-        //    this.organizeInfo = res.data;
-        //    this.sfDefaultValue();
-
-        //});
-
     }
 
 
@@ -158,6 +165,7 @@ export class SysAdminRoleViewComponent implements OnInit {
         }
         this.http.get('/SysRole', Patams).subscribe((res: any) => {
                 this.roleInfo = res.data;
+
                 this.sfDefaultValue();
         });
     }
@@ -170,8 +178,9 @@ export class SysAdminRoleViewComponent implements OnInit {
 
     //修改按钮
     downUpdate(e: NzMenuItemDirective): void {
-
+        this.SelectIndex = 0;
         this.TreeClick(this.downEvent, true);
+        this.TreeModule(this.downEvent.node.key);
         this.dropdown.close();
     }
     //删除按钮
@@ -198,15 +207,35 @@ export class SysAdminRoleViewComponent implements OnInit {
 
     //表单赋值
     sfDefaultValue(): void {
+
+        if (this.roleInfo.isDisabled) {
+            this.schema.properties.FullName.readOnly = true;
+            this.schema.properties.FullNameEn.readOnly = true;
+            this.schema.properties.Description.readOnly = true;
+            this.schema.properties.EnabledMark.readOnly = true;
+            this.schema.properties.SortCode.readOnly = true;
+            this.schema.properties.IsExpand.readOnly = true;
+        }else
+        {
+            this.schema.properties.FullName.readOnly = false;
+            this.schema.properties.FullNameEn.readOnly = false;
+            this.schema.properties.Description.readOnly = false;
+            this.schema.properties.EnabledMark.readOnly = false;
+            this.schema.properties.SortCode.readOnly = false;
+            this.schema.properties.IsExpand.readOnly = false;
+        }
+
         this.schema.properties.FullName.default = this.roleInfo.fullName;
         this.schema.properties.FullNameEn.default = this.roleInfo.fullNameEn;
         this.schema.properties.Description.default = this.roleInfo.description;
         this.schema.properties.EnabledMark.default = this.roleInfo.enabledMark;
         this.schema.properties.SortCode.default = this.roleInfo.sortCode;
+        this.schema.properties.IsExpand.default = this.roleInfo.isExpand;
     }
 
     //添加一个根角色
     AddRoleInfo(): void {
+        this.SelectIndex = 0;
         this.isEdit = true;
         this.roleInfo = {};
         this.roleInfo.enabledMark = true;
@@ -214,12 +243,74 @@ export class SysAdminRoleViewComponent implements OnInit {
         this.roleInfo.organizeId = this.OrganizeId;
         this.sfDefaultValue();
     }
+
+     //Tabs改变回调
+        SelectChange(event:any) {
+            this.SelectIndex = event.index;
+        }
+          //下一步
+  clickNext():void {
+    this.SelectIndex = 1;
+    
+
+  }
+  clickPrevious():void {
+    this.SelectIndex = 0;
+  }
+
+
+  getArray(arr)
+  {
+      arr.forEach(item => {
+
+        if ("origin" in item) {
+          if("children" in item.origin)
+          {
+            if(item.origin.children.length > 0) {
+              this.CheckTreeArr.push(item.origin);
+              this.CheckTreeArr.concat(this.CheckTreeArr, this.getArray(item.origin.children));
+            }else{
+              this.CheckTreeArr.push(item.origin);
+            }
+          
+          }
+          else{ 
+            this.CheckTreeArr.push(item.origin);
+          }
+        } else {
+          if("children" in item)
+          {
+            if(item.children.length > 0) {
+              this.CheckTreeArr.push(item);
+              this.CheckTreeArr.concat(this.CheckTreeArr, this.getArray(item.children));
+            }
+            else{ 
+              this.CheckTreeArr.push(item);
+            }
+          }
+          else{ 
+            this.CheckTreeArr.push(item);
+          }
+        }
+
+
+      });
+
+    
+  }
+
     //提交角色
     submit(): void {
         let Params: any = {};
-
+        this.CheckTreeArr = [];
+        this.getArray(this.treeCom.getCheckedNodeList())
+        this.treeCom.getHalfCheckedNodeList().forEach(element => {
+            element.origin.children = [];
+            this.CheckTreeArr.push(element.origin);
+        });
+ 
         Object.assign(Params, this.sf.value);
-
+        Params.treeModels = this.CheckTreeArr;
         if (Params.id != undefined && Params.id != null) {
             this.http.put(`/SysRole/${Params.id}`, Params).subscribe((res: any) => {
                 this.TreeInit();

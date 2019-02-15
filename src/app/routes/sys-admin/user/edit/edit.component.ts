@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild, Input } from '@angular/core';
 import { NzModalRef, NzMessageService, NzDrawerRef } from 'ng-zorro-antd';
 import { _HttpClient } from '@delon/theme';
 import { SFSchema, SFUISchema, SFButton, SFComponent } from '@delon/form';
-
+import { environment } from '@env/environment';
 @Component({
   selector: 'app-sys-admin-user-edit',
   templateUrl: './edit.component.html',
@@ -68,8 +68,8 @@ export class SysAdminUserEditComponent implements OnInit {
           showUploadList:false,
           change: (args) => {
               if(args.type == "success") {
-                  this.userInfo.headIcon = 'https://localhost:5001/' + args.file.response.data;
-                  this.sf.setValue('/headIcon','https://localhost:5001/' + args.file.response.data);
+                  this.userInfo.headIcon = environment.SERVER_URL+'/../' + args.file.response.data;
+                  this.sf.setValue('/headIcon',environment.SERVER_URL+'/../'  + args.file.response.data);
               }
           },
         },

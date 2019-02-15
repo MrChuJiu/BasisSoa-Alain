@@ -2,7 +2,7 @@
 <nz-spin [nzSpinning]="userLoading">
     <div nz-row >
         <div nz-col nzSpan="8">
-            <sf #sf [schema]="schema" [ui]="ui"  [button]="sfbutton" (formSubmit)="submit(event)">
+            <sf #sf [schema]="schema"   [button]="sfbutton" (formSubmit)="submit()">
             </sf>
         </div>
         <div nz-col nzOffset="1" nzSpan="15">

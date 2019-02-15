@@ -22,7 +22,7 @@ export class SysAdminModuleViewComponent implements OnInit {
   //事件产生的数据
   private downEvent:NzFormatEmitEvent;
   //是否编辑
-  private isEdit:boolean = false;
+  public isEdit:boolean = false;
   //控制Tabs的
   private SelectIndex:number = 0;
 
@@ -203,11 +203,11 @@ export class SysAdminModuleViewComponent implements OnInit {
 
   //ST显示模块按钮
   columns: STColumn[] = [
+    { title: '说明', index: 'description' },
     { title: '方法名称', index: 'actionName' },
     { title: 'ACL',  index: 'acl' },
     { title: '请求方式', index: 'requestMethod' },
     { title: '是否可用', index: 'enabledMark' },
-    { title: '说明', index: 'description' },
   ];
 
 

@@ -9,7 +9,7 @@
             <div nz-col nzSpan="4">
             
                     <nz-card  nzTitle="组织列表" >
-                           <nz-tree  #treeCom  
+                           <nz-tree  
                                 [nzData]="organizenodes"
                                 (nzClick)="TreeOrganizeClick($event)">
                             </nz-tree>
@@ -18,7 +18,7 @@
         <div nz-col nzSpan="4">
             
             <nz-card  nzTitle="角色列表" [nzExtra]="extraTemplate"  >
-                   <nz-tree  #treeCom   (nzContextMenu)="contextMenu($event,template)"
+                   <nz-tree  (nzContextMenu)="contextMenu($event,template)"
                         [nzData]="nodes"
                         (nzClick)="TreeClick($event,false)">
                         <ng-template #template>
@@ -36,28 +36,46 @@
               </ng-template>
         </div>
         <div nz-col nzSpan="16">
-                <nz-card  nzTitle="查看" *ngIf="roleInfo !== null">
+                
                         <ng-container *ngIf="isEdit; else elseTemplate">
-                               
-                             <sf #sf [schema]="schema" [formData]="roleInfo" (formSubmit)="submit(event)" ></sf>
-
+                                        <nz-card  *ngIf="moduleInfo !== null" >
+                                            <nz-tabset [nzSelectedIndex]="SelectIndex" (nzSelectChange)="SelectChange($event)">
+                                                <nz-tab nzTitle="角色信息">
+                                                     <sf #sf [schema]="schema" [formData]="roleInfo" [button]="null" >
+                                                         <button type="submit" nz-button  nzType="primary" (click)="clickNext()">下一步</button>
+                                                     </sf>
+                                                </nz-tab>
+                                                <nz-tab nzTitle="角色权限配置">
+                                                        <nz-tree
+                                                        #treeCom  
+                                                        [nzData]="Treenodes"
+                                                        [nzCheckable]="true"
+                                                        [nzMultiple]="true">
+                                                        </nz-tree>
+                                                        <div style="text-align: center;margin-top: 3rem"> 
+                                                        <button type="button" nz-button (click)="clickPrevious()">上一步</button>
+                                                        <button type="submit" nz-button  nzType="primary" [disabled]="roleInfo.isDisabled" (click)="submit()" >提交</button>
+                                                        </div>
+                                                </nz-tab>
+                                             </nz-tabset>
+                                    </nz-card>
                          </ng-container>
-                            <ng-template #elseTemplate>
-                              <sv-container labelWidth="100" col="2">
-              
-                                  <sv label="中文名称">{{roleInfo?.fullName}}</sv>
-                                  <sv label="英文名称">{{roleInfo?.fullNameEn}}</sv>
-                                  <sv label="说明">{{roleInfo?.description}}</sv>
-                                  <sv label="排序">{{roleInfo?.sortCode}}</sv>
-                                  <sv label="是否可用">{{roleInfo?.enabledMark}}</sv>
-                                  <sv label="创建人">{{roleInfo?.creatorUserName}}</sv>
-                                  <sv label="创建时间">{{roleInfo?.creatorTime}}</sv>
-                  
-                                </sv-container>
-                            </ng-template>
-                            
-
-                </nz-card>
+                         <ng-template #elseTemplate>
+                                 <nz-card  nzTitle="查看" *ngIf="moduleInfo !== null">
+                                                <sv-container labelWidth="100" col="2">
+                
+                                                        <sv label="中文名称">{{roleInfo?.fullName}}</sv>
+                                                        <sv label="英文名称">{{roleInfo?.fullNameEn}}</sv>
+                                                        <sv label="说明">{{roleInfo?.description}}</sv>
+                                                        <sv label="排序">{{roleInfo?.sortCode}}</sv>
+                                                        <sv label="是否可用">{{roleInfo?.enabledMark}}</sv>
+                                                        <sv label="创建人">{{roleInfo?.creatorUserName}}</sv>
+                                                        <sv label="创建时间">{{roleInfo?.creatorTime}}</sv>
+                                                                
+                                                </sv-container>
+                                 </nz-card>
+                        </ng-template>
+                                
                
         </div>
       </div>

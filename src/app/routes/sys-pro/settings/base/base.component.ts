@@ -9,6 +9,7 @@ import { _HttpClient } from '@delon/theme';
 import { zip } from 'rxjs';
 import { NzMessageService } from 'ng-zorro-antd';
 import { SFButton, SFComponent, SFSchema } from '@delon/form';
+import { environment } from '@env/environment';
 
 @Component({
   selector: 'app-sys-pro-settings-base',
@@ -128,7 +129,7 @@ export class SysProSettingsBaseComponent implements OnInit {
 
       UploadChange(event) {
         if(event.type == "success") {
-            this.userInfo.headIcon = 'https://localhost:5001/' + event.file.response.data;
+            this.userInfo.headIcon =  environment.SERVER_URL+'/../'  + event.file.response.data;
          }
       }
   
