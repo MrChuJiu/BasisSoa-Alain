@@ -26,6 +26,8 @@ import { SettingsService } from '@delon/theme';
 
 import { environment } from '@env/environment';
 import { SettingDrawerComponent } from './setting-drawer/setting-drawer.component';
+import { WebsocketService, NoticetemplateModule } from '@core/service/websocket.service';
+
 
 @Component({
   selector: 'layout-default',
@@ -37,9 +39,11 @@ export class LayoutDefaultComponent implements OnInit, AfterViewInit, OnDestroy 
   private settingHost: ViewContainerRef;
   isFetching = false;
 
+
   constructor(
     router: Router,
     _message: NzMessageService,
+    private _websocket: WebsocketService,
     private resolver: ComponentFactoryResolver,
     private settings: SettingsService,
     private el: ElementRef,
@@ -65,6 +69,7 @@ export class LayoutDefaultComponent implements OnInit, AfterViewInit, OnDestroy 
         this.isFetching = false;
       }, 100);
     });
+
   }
 
   private setClass() {
@@ -93,10 +98,23 @@ export class LayoutDefaultComponent implements OnInit, AfterViewInit, OnDestroy 
     }
   }
 
+
+
   ngOnInit() {
     const { settings, unsubscribe$ } = this;
     settings.notify.pipe(takeUntil(unsubscribe$)).subscribe(() => this.setClass());
     this.setClass();
+
+    let msg = new NoticetemplateModule(); 
+    msg.title = '测试链接';
+    msg.avatar = "头像";
+    msg.type = "消息类型";
+    msg.datetime = "说明";
+    msg.status = "着急状态";
+    this._websocket.SendMsg(msg);
+
+    console.log(this._websocket.GetMsg());
+  
   }
 
   ngOnDestroy() {
