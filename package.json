@@ -43,6 +43,7 @@
     "@ngx-translate/core": "^11.0.1",
     "@ngx-translate/http-loader": "^4.0.0",
     "ajv": "^6.6.2",
+    "classlist.js": "^1.1.20150312",
     "core-js": "^2.5.4",
     "editorconfig-tools": "^0.1.1",
     "husky": "^1.1.0",
@@ -58,6 +59,7 @@
     "tslib": "^1.9.0",
     "tslint-config-prettier": "^1.17.0",
     "tslint-language-service": "^0.9.9",
+    "web-animations-js": "^2.3.1",
     "zone.js": "~0.8.26"
   },
   "devDependencies": {

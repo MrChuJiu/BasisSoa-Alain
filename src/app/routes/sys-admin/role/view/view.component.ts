@@ -23,7 +23,7 @@ export class SysAdminRoleViewComponent implements OnInit {
     //事件产生的数据
     private downEvent: NzFormatEmitEvent;
     //是否编辑
-    private isEdit: boolean = false;
+    isEdit: boolean = false;
     //控制Tabs的
     private SelectIndex:number = 0;
 
