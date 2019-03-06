@@ -12,6 +12,7 @@ import {
 import { ReuseTabService } from '@delon/abc';
 import { environment } from '@env/environment';
 import { StartupService } from '@core';
+import { LocalStorageService } from '@core/service/local-storage.service';
 
 @Component({
   selector: 'passport-login',
@@ -28,8 +29,10 @@ export class UserLoginComponent implements OnDestroy {
     fb: FormBuilder,
     modalSrv: NzModalService,
     private router: Router,
+    private LocalStorageSrv:LocalStorageService,
     private settingsService: SettingsService,
     private socialService: SocialService,
+
     @Optional()
     @Inject(ReuseTabService)
     private reuseTabService: ReuseTabService,
@@ -124,16 +127,23 @@ export class UserLoginComponent implements OnDestroy {
           return;
         }
         let user={
-          token:res.data,
+          token:res.data.token,
         };
         // 清空路由复用信息
         this.reuseTabService.clear();
         // 设置用户Token信息
         this.tokenService.set(user);
+
+
         // 重新获取 StartupService 内容，我们始终认为应用信息一般都会受当前用户授权范围而影响
         this.startupSrv.load().then(() => {
           let url = this.tokenService.referrer.url || '/';
           if (url.includes('/passport')) url = '/';
+
+      
+            // this.LocalStorageSrv.set("TokenExpire",res.data.expires); //用户过期时间
+            // this.LocalStorageSrv.set("refreshtime",res.data.expires); //用户活跃时间
+          
           this.router.navigateByUrl(url);
         });
       });

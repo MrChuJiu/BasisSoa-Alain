@@ -3,6 +3,7 @@ import { NzModalRef, NzMessageService, NzDrawerService } from 'ng-zorro-antd';
 import { _HttpClient } from '@delon/theme';
 import { STColumn, STReq, STComponent } from '@delon/abc';
 import { SysAdminUserEditComponent } from '../edit/edit.component';
+import { SFComponent, SFSchema } from '@delon/form';
 
 @Component({
   selector: 'app-sys-admin-user-view',
@@ -10,7 +11,7 @@ import { SysAdminUserEditComponent } from '../edit/edit.component';
 })
 export class SysAdminUserViewComponent implements OnInit {
 
-  url = `/SysUser`;
+  url = `/SysUser/GetUserList`;
 
   columns: STColumn[] = [
     { title: '行号', type: 'no' },
@@ -48,8 +49,32 @@ export class SysAdminUserViewComponent implements OnInit {
 
   @ViewChild('st') st:STComponent;
 
+  @ViewChild('sf') sf:SFComponent;
+
+  schema: SFSchema= {
+    properties: {
+      account: {
+        type: "string",
+        title: '登录账号',
+      },
+      tel: {
+        type: "string",
+        title: '手机号',
+      },
+      email: {
+        type: "string",
+        title: '邮箱',
+        ui: {
+          widget: 'autocomplete',
+          type: 'email',
+        },
+      },
+    },
+  }
+  
   req:STReq = {
-    //method:'POST',
+    method:'POST',
+    allInBody:true
     //headers:'content-type: text/plain'
   }
   

@@ -3,9 +3,12 @@
     <ng-template #extraTemplate>
         <button nz-button nzType="primary" (click)="openComponent('0')" >新建</button>
       </ng-template>
+      <ng-template #titleTemplate>
+          <sf #sf [schema]="schema"  (formSubmit)="st.load(1,sf.value)" layout="horizontal" mode="search"></sf>
+      </ng-template>
     
 </page-header>
 
-<nz-card  [nzExtra]="extraTemplate">
+  <nz-card  [nzTitle]="titleTemplate" [nzExtra]="extraTemplate">
     <st #st [data]="url" [req]="req" [columns]="columns"></st>
   </nz-card>

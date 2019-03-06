@@ -1,12 +1,15 @@
 import { Injectable, Injector } from '@angular/core';
 import { Router } from '@angular/router';
-import { HttpInterceptor, HttpRequest, HttpHandler, HttpErrorResponse, HttpEvent, HttpResponseBase, HttpResponse } from '@angular/common/http';
+import { HttpInterceptor, HttpRequest, HttpHandler, HttpErrorResponse, HttpEvent, HttpResponseBase, HttpResponse, HttpClient } from '@angular/common/http';
 import { Observable, of, throwError } from 'rxjs';
-import { mergeMap, catchError } from 'rxjs/operators';
+import { mergeMap, catchError, filter } from 'rxjs/operators';
 import { NzMessageService, NzNotificationService } from 'ng-zorro-antd';
 import { _HttpClient } from '@delon/theme';
 import { environment } from '@env/environment';
 import { DA_SERVICE_TOKEN, ITokenService } from '@delon/auth';
+import { LocalStorageService } from '@core/service/local-storage.service';
+
+
 const CODEMESSAGE = {
     200: '服务器成功返回请求的数据。',
     201: '新建或修改数据成功。',
@@ -32,7 +35,8 @@ const CODEMESSAGE = {
 export class DefaultInterceptor implements HttpInterceptor {
     constructor(
         public msgSrv: NzMessageService,
-
+        private LocalStorageSrv:LocalStorageService,
+        private http: HttpClient,
         private injector: Injector) { }
 
     get msg(): NzMessageService {
@@ -108,8 +112,35 @@ export class DefaultInterceptor implements HttpInterceptor {
                 break;
             case 401: // 未登录状态码
                 // 请求错误 401: https://preview.pro.ant.design/api/401 用户没有权限（令牌、用户名、密码错误）。
-                (this.injector.get(DA_SERVICE_TOKEN) as ITokenService).clear();
-                this.goTo('/passport/login');
+             
+
+                //return of(new HttpResponse();
+
+                // var curTime = new Date()
+                // var refreshtime = new Date(Date.parse(this.LocalStorageSrv.get("refreshtime")))
+                // // 在用户操作的活跃期内
+                // if (this.LocalStorageSrv.get("refreshtime") && (curTime <= refreshtime)) {
+
+                    
+                //   return of(this.http.post("/Login",null,{headers:{"Authorization":(this.injector.get(DA_SERVICE_TOKEN) as ITokenService).get().token}})
+                //         .pipe(filter(e => e instanceof HttpRequest))
+                //         .subscribe((res: any) => {
+                //             var curTime = new Date();
+                //             var expiredate = new Date(curTime.setSeconds(curTime.getSeconds() + res.expires_in));
+                //             this.LocalStorageSrv.set("TokenExpire",expiredate.toString());
+                //         }));
+
+                // } else
+                // {
+                //     (this.injector.get(DA_SERVICE_TOKEN) as ITokenService).clear();
+                //     this.goTo('/passport/login');
+                // }
+
+
+            
+                 (this.injector.get(DA_SERVICE_TOKEN) as ITokenService).clear();
+                 this.goTo('/passport/login');
+
                 break;
             case 403:
             case 404:
@@ -137,6 +168,22 @@ export class DefaultInterceptor implements HttpInterceptor {
                 url = './' + url;
             }
         }
+
+        //处理Jwt认证过期问题 监听到用户出现了请求
+        // let nowtime = new Date(); //当前时间
+
+        // let lastRefreshtime = this.LocalStorageSrv.get("refreshtime") ? new Date(this.LocalStorageSrv.get("refreshtime")) : new Date(-1);
+        // let expiretime = new Date(Date.parse(this.LocalStorageSrv.get("TokenExpire")))
+
+        // let refreshCount=1;//滑动系数
+        // if (lastRefreshtime >= nowtime) {
+        //     lastRefreshtime=nowtime>expiretime ? nowtime:expiretime;
+        //     lastRefreshtime.setMinutes(lastRefreshtime.getMinutes() + refreshCount);
+        //     this.LocalStorageSrv.set("refreshtime",lastRefreshtime.toString())
+        // }else {
+        //     this.LocalStorageSrv.set("refreshtime",new Date(-1).toString())
+
+        // }
 
 
         const newReq = req.clone({ url });
